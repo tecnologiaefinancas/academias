@@ -1,9 +1,8 @@
 package com.tecnologiaefinancas.academias.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class Gym {
@@ -12,21 +11,28 @@ public class Gym {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
+    private String name;
     private String address;
+    private String city;
+    private String neighborhood;
     private String whatsapp;
     private String website;
     private String instagram;
+
     private String imageUrl;
+
     private String mapUrl;
     private String googleRate;
 
     public Gym() {
     }
 
-    public Gym(String title, String address, String whatsapp, String website, String instagram, String imageUrl, String mapUrl, String googleRate) {
-        this.title = title;
+    public Gym(Long id, String name, String address, String city, String neighborhood, String whatsapp, String website, String instagram, String imageUrl, String mapUrl, String googleRate) {
+        this.id = id;
+        this.name = name;
         this.address = address;
+        this.city = city;
+        this.neighborhood = neighborhood;
         this.whatsapp = whatsapp;
         this.website = website;
         this.instagram = instagram;
@@ -44,11 +50,11 @@ public class Gym {
     }
 
     public String getTitle() {
-        return title;
+        return name;
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        this.name = title;
     }
 
     public String getAddress() {
@@ -83,6 +89,14 @@ public class Gym {
         this.instagram = instagram;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getImageUrl() {
         return imageUrl;
     }
@@ -107,12 +121,30 @@ public class Gym {
         this.googleRate = googleRate;
     }
 
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getNeighborhood() {
+        return neighborhood;
+    }
+
+    public void setNeighborhood(String neighborhood) {
+        this.neighborhood = neighborhood;
+    }
+
     @Override
     public String toString() {
         return "Gym{" +
                 "id=" + id +
-                ", title='" + title + '\'' +
+                ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
+                ", city='" + city + '\'' +
+                ", neighborhood='" + neighborhood + '\'' +
                 ", whatsapp='" + whatsapp + '\'' +
                 ", website='" + website + '\'' +
                 ", instagram='" + instagram + '\'' +
