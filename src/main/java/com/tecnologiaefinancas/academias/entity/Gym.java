@@ -1,15 +1,14 @@
 package com.tecnologiaefinancas.academias.entity;
 
-import jakarta.persistence.*;
 
-import java.util.List;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-@Entity
+@Document(collection = "academias")
 public class Gym {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     private String name;
     private String address;
@@ -27,7 +26,7 @@ public class Gym {
     public Gym() {
     }
 
-    public Gym(Long id, String name, String address, String city, String neighborhood, String whatsapp, String website, String instagram, String imageUrl, String mapUrl, String googleRate) {
+    public Gym(String id, String name, String address, String city, String neighborhood, String whatsapp, String website, String instagram, String imageUrl, String mapUrl, String googleRate) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -41,11 +40,11 @@ public class Gym {
         this.googleRate = googleRate;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

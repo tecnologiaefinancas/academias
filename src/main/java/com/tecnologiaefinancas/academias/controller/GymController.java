@@ -8,10 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,14 +21,21 @@ public class GymController {
     private GymService gymService;
 
     @GetMapping
-    public ResponseEntity<Page<Gym>> getAllGyms(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Gym> gymsPage = gymService.getAllGyms(pageable);
-        return ResponseEntity.ok(gymsPage);
+    public List<Gym> getAllGyms(
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) String neighborhood
+    ) {
+        return gymService.getGymsWithFilters(city, neighborhood);
     }
 
+
+    @PostMapping
+    public ResponseEntity<Gym> addGym(@RequestBody Gym gym) {
+        Gym createdGym = gymService.createGym(gym);
+        return ResponseEntity.ok(createdGym);
+
+    }
+}
     /*
     @PostConstruct
     public void init() {
@@ -48,4 +52,4 @@ public class GymController {
         gymService.saveAllGyms(gyms);
 
     }*/
-}
+
