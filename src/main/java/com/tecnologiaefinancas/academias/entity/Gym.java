@@ -4,6 +4,8 @@ package com.tecnologiaefinancas.academias.entity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 @Document(collection = "academias")
 public class Gym {
 
@@ -17,27 +19,16 @@ public class Gym {
     private String whatsapp;
     private String website;
     private String instagram;
+    private String reelInstagramUrl;
 
-    private String imageUrl;
+
+
+    private List<String> imageUrl;
 
     private String mapUrl;
     private String googleRate;
 
     public Gym() {
-    }
-
-    public Gym(String id, String name, String address, String city, String neighborhood, String whatsapp, String website, String instagram, String imageUrl, String mapUrl, String googleRate) {
-        this.id = id;
-        this.name = name;
-        this.address = address;
-        this.city = city;
-        this.neighborhood = neighborhood;
-        this.whatsapp = whatsapp;
-        this.website = website;
-        this.instagram = instagram;
-        this.imageUrl = imageUrl;
-        this.mapUrl = mapUrl;
-        this.googleRate = googleRate;
     }
 
     public String getId() {
@@ -96,11 +87,11 @@ public class Gym {
         this.name = name;
     }
 
-    public String getImageUrl() {
+    public List<String> getImageUrl() {
         return imageUrl;
     }
 
-    public void setImageUrl(String imageUrl) {
+    public void setImageUrl(List<String> imageUrl) {
         this.imageUrl = imageUrl;
     }
 
@@ -136,10 +127,19 @@ public class Gym {
         this.neighborhood = neighborhood;
     }
 
+    public String getReelInstagramUrl() {
+        return reelInstagramUrl;
+    }
+
+    public void setReelInstagramUrl(String reelInstagramUrl) {
+        this.reelInstagramUrl = reelInstagramUrl;
+    }
+
+
     @Override
     public String toString() {
         return "Gym{" +
-                "id=" + id +
+                "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +
                 ", city='" + city + '\'' +
@@ -147,7 +147,8 @@ public class Gym {
                 ", whatsapp='" + whatsapp + '\'' +
                 ", website='" + website + '\'' +
                 ", instagram='" + instagram + '\'' +
-                ", imageUrl='" + imageUrl + '\'' +
+                ", reelInstagramUrl='" + reelInstagramUrl + '\'' +
+                ", imageUrl=" + imageUrl +
                 ", mapUrl='" + mapUrl + '\'' +
                 ", googleRate='" + googleRate + '\'' +
                 '}';
