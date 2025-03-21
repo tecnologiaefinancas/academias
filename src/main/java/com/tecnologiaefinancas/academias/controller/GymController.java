@@ -4,13 +4,9 @@ package com.tecnologiaefinancas.academias.controller;
 import com.tecnologiaefinancas.academias.entity.Gym;
 import com.tecnologiaefinancas.academias.service.GymService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -21,11 +17,8 @@ public class GymController {
     private GymService gymService;
 
     @GetMapping
-    public List<Gym> getAllGyms(
-            @RequestParam(required = false) String city,
-            @RequestParam(required = false) String neighborhood
-    ) {
-        return gymService.getGymsWithFilters(city, neighborhood);
+    public List<Gym> getAllGyms(@RequestParam(required = false) String searchTerm) {
+        return gymService.getGymsWithFilters(searchTerm);
     }
 
 
@@ -35,6 +28,14 @@ public class GymController {
         return ResponseEntity.ok(createdGym);
 
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Gym> updateGym(@PathVariable String id, @RequestBody Gym updatedGym) {
+        Gym gym = gymService.updateGym(id, updatedGym);
+        return ResponseEntity.ok(gym);
+    }
+
+
 }
     /*
     @PostConstruct
