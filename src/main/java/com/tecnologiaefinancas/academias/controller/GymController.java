@@ -4,6 +4,7 @@ package com.tecnologiaefinancas.academias.controller;
 import com.tecnologiaefinancas.academias.entity.Gym;
 import com.tecnologiaefinancas.academias.service.GymService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,16 +24,28 @@ public class GymController {
 
 
     @PostMapping
-    public ResponseEntity<Gym> addGym(@RequestBody Gym gym) {
-        Gym createdGym = gymService.createGym(gym);
-        return ResponseEntity.ok(createdGym);
+    public ResponseEntity<?> addGym(@RequestBody Gym gym) {
+        try {
+            Gym savedGym = gymService.createGym(gym);
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedGym);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao criar academia: " + e.getMessage());
+        }
 
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Gym> updateGym(@PathVariable String id, @RequestBody Gym updatedGym) {
-        Gym gym = gymService.updateGym(id, updatedGym);
-        return ResponseEntity.ok(gym);
+    public ResponseEntity<?> updateGym(@PathVariable String id, @RequestBody Gym updatedGym) {
+        try {
+            Gym gym = gymService.updateGym(id, updatedGym);
+            return ResponseEntity.ok(gym);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro: Dados inválidos fornecidos.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno no servidor.");
+        }
     }
 
 

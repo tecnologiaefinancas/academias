@@ -31,6 +31,21 @@ public class Gym {
     public Gym() {
     }
 
+    public Gym(String id, String name, String address, String city, String neighborhood, String whatsapp, String website, String instagram, String reelInstagramUrl, List<String> imageUrl, String mapUrl, String googleRate) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.city = city;
+        this.neighborhood = neighborhood;
+        this.whatsapp = whatsapp;
+        this.website = website;
+        this.instagram = instagram;
+        this.reelInstagramUrl = reelInstagramUrl;
+        this.imageUrl = imageUrl;
+        this.mapUrl = mapUrl;
+        this.googleRate = googleRate;
+    }
+
     public String getId() {
         return id;
     }
