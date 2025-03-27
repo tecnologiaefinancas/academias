@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -51,7 +50,6 @@ public class GymController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         try {
-            // Autenticar o usuário
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             request.getUsername(),
@@ -59,13 +57,11 @@ public class GymController {
                     )
             );
 
-            // Define o contexto de autenticação
             SecurityContextHolder.getContext().setAuthentication(authentication);
             System.out.println("Login realizado com sucesso!");
             return ResponseEntity.ok("Login realizado com sucesso!");
 
         } catch (Exception e) {
-            // Captura exceções e retorna erro
             return ResponseEntity.status(401).body("Credenciais inválidas");
         }
     }
