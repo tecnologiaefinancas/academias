@@ -1,11 +1,18 @@
 package com.tecnologiaefinancas.academias.controller;
 
 
+import com.tecnologiaefinancas.academias.dto.LoginRequest;
 import com.tecnologiaefinancas.academias.entity.Gym;
 import com.tecnologiaefinancas.academias.service.GymService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,13 +24,19 @@ public class GymController {
     @Autowired
     private GymService gymService;
 
+    private final AuthenticationManager authenticationManager;
+
+
+    public GymController(AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
+    }
+
     @GetMapping
     public List<Gym> getAllGyms(@RequestParam(required = false) String searchTerm) {
         return gymService.getGymsWithFilters(searchTerm);
     }
 
-
-    @PostMapping
+    @PostMapping("/new")
     public ResponseEntity<?> addGym(@RequestBody Gym gym) {
         try {
             Gym savedGym = gymService.createGym(gym);
@@ -33,6 +46,28 @@ public class GymController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao criar academia: " + e.getMessage());
         }
 
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+        try {
+            // Autenticar o usuário
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getUsername(),
+                            request.getPassword()
+                    )
+            );
+
+            // Define o contexto de autenticação
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            System.out.println("Login realizado com sucesso!");
+            return ResponseEntity.ok("Login realizado com sucesso!");
+
+        } catch (Exception e) {
+            // Captura exceções e retorna erro
+            return ResponseEntity.status(401).body("Credenciais inválidas");
+        }
     }
 
     @PutMapping("/{id}")
