@@ -70,6 +70,22 @@
 					<argLine>-javaagent:${settings.localRepository}/net/bytebuddy/byte-buddy-agent/1.15.11/byte-buddy-agent-1.15.11.jar</argLine>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>com.microsoft.azure</groupId>
+				<artifactId>azure-webapp-maven-plugin</artifactId>
+				<version>1.14.0</version>
+				<configuration>
+					<resourceGroup>NatResourcesGroup</resourceGroup>
+					<appName>academias</appName>
+					<region>brazilsouth</region>
+					<runtime>
+						<os>linux</os>
+						<javaVersion>Java 17</javaVersion>
+						<webContainer>Tomcat 9.0</webContainer>
+					</runtime>
+				</configuration>
+			</plugin>
+
 
 		</plugins>
 	</build>
