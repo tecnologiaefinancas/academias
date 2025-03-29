@@ -20,13 +20,13 @@ import java.util.List;
 @RequestMapping("/api/gyms")
 public class GymController {
 
-    @Autowired
-    private GymService gymService;
+    private final GymService gymService;
 
     private final AuthenticationManager authenticationManager;
 
 
-    public GymController(AuthenticationManager authenticationManager) {
+    public GymController(GymService gymService, AuthenticationManager authenticationManager) {
+        this.gymService = gymService;
         this.authenticationManager = authenticationManager;
     }
 

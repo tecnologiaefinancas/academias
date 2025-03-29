@@ -25,6 +25,14 @@ public class SecurityConfig {
         String adminUsername = System.getenv("ADMIN_USERNAME");
         String adminPassword = System.getenv("ADMIN_PASSWORD");
 
+        if (adminUsername == null || adminUsername.isEmpty()) {
+            throw new IllegalArgumentException("ADMIN_USERNAME must be set in the environment variables");
+        }
+
+        if (adminPassword == null || adminPassword.isEmpty()) {
+            throw new IllegalArgumentException("ADMIN_PASSWORD must be set in the environment variables");
+        }
+
         UserDetails admin = User.builder()
                 .username(adminUsername)
                 .password(passwordEncoder().encode(adminPassword))
@@ -33,6 +41,7 @@ public class SecurityConfig {
 
         return new InMemoryUserDetailsManager(admin);
     }
+
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
@@ -51,6 +60,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/gyms").permitAll()
                         .requestMatchers("/api/gyms/admin").hasRole("ADMIN")
                         .anyRequest().permitAll()
                 )
@@ -59,4 +69,6 @@ public class SecurityConfig {
 
         return http.build();
     }
+
+
 }
