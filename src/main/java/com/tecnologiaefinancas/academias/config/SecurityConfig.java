@@ -65,7 +65,7 @@ public class SecurityConfig {
                         .anyRequest().permitAll()
                 )
                 .httpBasic(customizer -> customizer.realmName("My Application")) // Configuração declarativa de HTTP Basic
-                .csrf(csrf -> csrf.disable()); // Opcional: desative o CSRF se não for necessário para APIs
+                .csrf(csrf -> csrf.disable());
 
         return http.build();
     }
