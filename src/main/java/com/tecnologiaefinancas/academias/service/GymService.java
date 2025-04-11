@@ -30,6 +30,10 @@ public class GymService {
         return gymRepository.findAll(gymsPage);
     }
 
+    public Gym getGymById(String id) {
+        return gymRepository.findById(id).orElse(null);
+    }
+
     public List<Gym> getGymsWithFilters(String searchTerm) {
         Query query = new Query();
 
@@ -56,18 +60,12 @@ public class GymService {
     }
 
 
-        public void saveAllGyms(List<Gym> gyms) {
+    public void saveAllGyms(List<Gym> gyms) {
         gymRepository.saveAll(gyms);
     }
 
-    public Gym updateGym(String id, Gym updatedGym) {
-
-        Gym existingGym = gymRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Academia não encontrada com o ID: " + id));
-
-        BeanUtils.copyProperties(updatedGym, existingGym, getNullPropertyNames(updatedGym));
-
-        return gymRepository.save(existingGym);
+    public Gym updateGym(Gym gym) {
+        return gymRepository.save(gym);
     }
 
     private String[] getNullPropertyNames(Object source) {

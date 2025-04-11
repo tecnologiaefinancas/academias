@@ -1,6 +1,7 @@
 package com.tecnologiaefinancas.academias.controller;
 
 
+import com.tecnologiaefinancas.academias.dto.GymEditDTO;
 import com.tecnologiaefinancas.academias.dto.LoginRequest;
 import com.tecnologiaefinancas.academias.entity.Gym;
 import com.tecnologiaefinancas.academias.service.GymService;
@@ -35,16 +36,61 @@ public class GymController {
         return gymService.getGymsWithFilters(searchTerm);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Gym> getGymById(@PathVariable String id) {
+        Gym gym = gymService.getGymById(id);
+        if (gym != null) {
+            return ResponseEntity.ok(gym);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @PostMapping("/new")
     public ResponseEntity<?> addGym(@RequestBody Gym gym) {
         try {
             Gym savedGym = gymService.createGym(gym);
+            System.out.println(savedGym + "cadastrada com sucesso!");
             return ResponseEntity.status(HttpStatus.CREATED).body(savedGym);
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao criar academia: " + e.getMessage());
         }
 
+    }
+
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<?> editGym(@PathVariable String id, @RequestBody GymEditDTO gymEditDTO) {
+        try {
+            Gym existingGym = gymService.getGymById(id);
+            if (existingGym == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Gym not found.");
+            }
+
+            updateFields(existingGym, gymEditDTO);
+
+            Gym updatedGym = gymService.updateGym(existingGym);
+
+            System.out.println(updatedGym + " updated successfully!");
+            return ResponseEntity.status(HttpStatus.OK).body(updatedGym);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error while updating gym: " + e.getMessage());
+        }
+    }
+
+    private void updateFields(Gym existingGym, GymEditDTO gymEditDTO) {
+        existingGym.setName(gymEditDTO.getName());
+        existingGym.setAddress(gymEditDTO.getAddress());
+        existingGym.setCity(gymEditDTO.getCity());
+        existingGym.setNeighborhood(gymEditDTO.getNeighborhood());
+        existingGym.setWhatsapp(gymEditDTO.getWhatsapp());
+        existingGym.setWebsite(gymEditDTO.getWebsite());
+        existingGym.setInstagram(gymEditDTO.getInstagram());
+        existingGym.setReelInstagramUrl(gymEditDTO.getReelInstagramUrl());
+        existingGym.setImageUrl(gymEditDTO.getImageUrl());
+        existingGym.setMapUrl(gymEditDTO.getMapUrl());
+        existingGym.setGoogleRate(gymEditDTO.getGoogleRate());
     }
 
     @PostMapping("/login")
@@ -65,20 +111,6 @@ public class GymController {
             return ResponseEntity.status(401).body("Credenciais inválidas");
         }
     }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateGym(@PathVariable String id, @RequestBody Gym updatedGym) {
-        try {
-            Gym gym = gymService.updateGym(id, updatedGym);
-            return ResponseEntity.ok(gym);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro: Dados inválidos fornecidos.");
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno no servidor.");
-        }
-    }
-
 
 }
     /*
